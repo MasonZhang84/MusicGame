@@ -34,7 +34,7 @@ public class playerControl : MonoBehaviour
         Vector2 lookDir = mousePos - rd.position;
         // get rotation
         // note the -135 is the offset, change this if the sprite changes
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 45f;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg -90;
         //apply rotation
         rd.rotation = angle; 
 

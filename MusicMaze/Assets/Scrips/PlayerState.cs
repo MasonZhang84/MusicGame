@@ -20,11 +20,7 @@ public class PlayerState : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   // used for hp bar debug, space to take dmg
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerTakeDamage(30f);
-        }
+    {
         // if player has no hp, they're dead so change boolean 
         if (playerHP == 0)
         {

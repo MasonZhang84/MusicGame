@@ -4,44 +4,55 @@ using UnityEngine;
 
 public class playerControl : MonoBehaviour
 {
+    
     public float moveSpeed = 5f;
-    public Rigidbody2D rd;
-    public Camera cam; 
-    Vector2 movement;
-    Vector2 mousePos;
-    public PlayerState playerState; //refrence player state 
+    public float rollSpeed = 10f;
+    private Vector2 movement;
+    private Rigidbody2D rb;
+    private bool isRolling = false;
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
-        if (!playerState.isDead) {
-            // get movment
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
-            // get mouse position 
-            mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        // Input
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(Roll());
         }
-        
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        if (!playerState.isDead)
-            // move player
-            rd.MovePosition(rd.position + movement * moveSpeed * Time.deltaTime);
-            // move mouse
-            // get direction
-            Vector2 lookDir = mousePos - rd.position;
-            // get rotation
-            // note the -135 is the offset, change this if the sprite changes
-            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
-            //apply rotation
-            rd.rotation = angle;
+        // Movement
+        if (!isRolling)
         {
-
-
-
-
+            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         }
+    }
+
+    IEnumerator Roll()
+    {
+        isRolling = true;
+        float rollTime = 0.5f; // Roll duration
+        float startRoll = Time.time;
+
+        while (Time.time < startRoll + rollTime)
+        {
+            // Interpolate the roll speed from initial to zero
+            float t = (Time.time - startRoll) / rollTime;
+            float currentRollSpeed = Mathf.Lerp(rollSpeed, 0f, t);
+
+            rb.MovePosition(rb.position + movement * currentRollSpeed * Time.fixedDeltaTime);
+            yield return null;
+        }
+
+        isRolling = false;
     }
 }

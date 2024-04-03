@@ -5,8 +5,8 @@ using UnityEngine;
 public class playerControl : MonoBehaviour
 {
     
-    public float moveSpeed = 5f;
-    public float rollSpeed = 10f;
+    public float moveSpeed = 10f;
+    public float rollSpeed = 20f;
     private Vector2 movement;
     private Rigidbody2D rb;
     private bool isRolling = false;

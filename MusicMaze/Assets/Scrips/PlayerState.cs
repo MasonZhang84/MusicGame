@@ -12,10 +12,15 @@ public class PlayerState : MonoBehaviour
     public float playerHP;
     public float maxHP;
     public Boolean isDead;
+    public int stateTracker = 0;
+    public Conductor conductorRefrence;
+
+    List<string> states = new List<string> { "guitar", "trombone"};
 
     void Start()
     {
-
+        playerState = states[stateTracker];
+        stateTracker++;
     }
 
     // Update is called once per frame
@@ -26,6 +31,29 @@ public class PlayerState : MonoBehaviour
         {
             isDead = true;
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            playerState = states[stateTracker];
+            stateTracker++;
+            if (stateTracker == 2)
+            {
+                stateTracker = 0;
+
+            }
+            if (playerState == "guitar")
+            {
+                conductorRefrence.resetting("guitar");
+            }
+
+            else if(playerState == "trombone")
+            {
+                conductorRefrence.resetting("trombone");
+            }
+            
+            }
+        
     }
     //this function is used when we want the player to take dmg
     public void playerTakeDamage(float dmg)

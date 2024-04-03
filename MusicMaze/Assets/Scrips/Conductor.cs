@@ -1,12 +1,15 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.TerrainTools;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class Conductor : MonoBehaviour
 {
     //Song beats per minute
     //This is determined by the song you're trying to sync up to
-    public double songGuitarBpm = 123;
+    public double songGuitarBpm = 130;
 
     //The number of seconds for each song beat
     public double secPerBeat;
@@ -25,15 +28,17 @@ public class Conductor : MonoBehaviour
 
     // guitar music
     public AudioClip guitar;
+    // trobone 
+    public AudioClip trombone;
 
-    //The offset to the first beat of the song in seconds
-    public double firstBeatOffset = 0.34D;
+
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        //change music
         musicSource.clip = guitar;
 
         //Calculate the number of seconds in each beat
@@ -51,17 +56,48 @@ public class Conductor : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (songPositionInBeats >= 15)
-        {
-            songPositionInBeats = 0;
-            songPosition = 0;
-        }
-
         //determine how many seconds since the song started
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
+        songPosition = (float)(AudioSettings.dspTime - dspSongTime);
 
         //determine how many beats since the song started
         songPositionInBeats = songPosition / secPerBeat;
+
+
+
+
+    }
+
+    public void resetting(string type)
+    {   
+        if (type == "guitar")
+        {
+            //change music
+            musicSource.clip = guitar;
+
+            //Calculate the number of seconds in each beat
+            secPerBeat = 60D / 65;
+
+            //Record the time when the music starts
+            dspSongTime = (double)AudioSettings.dspTime;
+
+            //Start the music
+            musicSource.Play();
+        }
+        else if (type == "trombone")
+        {
+            //change music
+            musicSource.clip = trombone;
+
+            //Calculate the number of seconds in each beat
+            secPerBeat = 60D / 70;
+
+            //Record the time when the music starts
+            dspSongTime = (double)AudioSettings.dspTime;
+
+            //Start the music
+            musicSource.Play();
+        }
+
 
         
     }

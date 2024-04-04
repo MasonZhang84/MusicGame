@@ -45,6 +45,8 @@ public class shooting : MonoBehaviour
 
     public Boolean isActive = false;
 
+    public Animator animator;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -61,6 +63,11 @@ public class shooting : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
+
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
         positionBPM = conductorComp.songPositionInBeats;
 
         // Find all enemies with the "Enemy" tag
@@ -75,6 +82,7 @@ public class shooting : MonoBehaviour
                 // Enemy is within aggro range, destroy it
                 Destroy(enemy);
             }
+
         }
 
 
@@ -85,6 +93,8 @@ public class shooting : MonoBehaviour
             {
                 if (shootingTimer <= 0)
                 {
+                    animator.SetFloat("Guitar", 1f);
+                    Invoke("Delaytrumpet", 1f);
                     shootingTimer = shootingCooldown;
                     shoot();
                 }
@@ -105,7 +115,7 @@ public class shooting : MonoBehaviour
             {
                 if (shootingTimer <= 0)
                 {
-                    
+                    animator.SetFloat("Trumpet", 1f);
                     shootingTimer = shootingCooldown;
                     StartCoroutine(Roll());
                     StartCoroutine(ControlRendering());
@@ -133,7 +143,7 @@ public class shooting : MonoBehaviour
     IEnumerator Cooldown()
     {
         isCooldown = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.7f);
         isCooldown = false;
     }
 
@@ -151,10 +161,6 @@ public class shooting : MonoBehaviour
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
     }
 
-    void bash()
-    {
-
-    }
 
     IEnumerator Roll()
     {
@@ -188,6 +194,7 @@ public class shooting : MonoBehaviour
 
         // Disable rendering
         renderer.enabled = false;
+        animator.SetFloat("Trumpet", 0f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -198,6 +205,12 @@ public class shooting : MonoBehaviour
             // Destroy the enemy GameObject
             Destroy(other.gameObject);
         }
+    }
+
+    void Delaytrumpet() {
+
+        animator.SetFloat("Guitar", 0f);
+
     }
 }
 

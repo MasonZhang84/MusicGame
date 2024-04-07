@@ -41,7 +41,7 @@ public class shooting : MonoBehaviour
     public float bubbleLife = 0.5f;
     public GameObject bubbleRefrence;
 
-    public float aggroRange = 0.01f;
+    public float aggroRange = 4f;
 
     public Boolean isActive = false;
 
@@ -60,8 +60,15 @@ public class shooting : MonoBehaviour
 
         Conductor conductorComp = playerObj.GetComponent<Conductor>();
 
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        GameObject gameMaster = GameObject.Find("GameMaster");
+
+        PlayerState playerStateRef = gameMaster.GetComponent<PlayerState>();
+
+        if (playerStateRef.isDead == false) {
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
+        }
+        
 
 
         animator.SetFloat("Horizontal", movement.x);

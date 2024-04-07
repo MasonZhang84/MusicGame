@@ -20,6 +20,9 @@ public class bullet : MonoBehaviour
         // if we hit an enemy
         if (collision.gameObject.tag == "Enemy")
         {
+            // Increment the kill count
+            KillCounting.AddKill();
+            
             Destroy(collision.gameObject); // This line destroys the enemy GameObject
         }
     }

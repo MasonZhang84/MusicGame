@@ -15,6 +15,8 @@ public class PlayerState : MonoBehaviour
     public int stateTracker = 0;
     public Conductor conductorRefrence;
 
+    public GameOverScreen gameOverScreen; 
+
     List<string> states = new List<string> { "guitar", "trombone"};
 
     void Start()
@@ -31,6 +33,13 @@ public class PlayerState : MonoBehaviour
         {
             isDead = true;
         }
+
+        if (playerHP > 100)
+        {
+            playerHP = 100;
+        }
+
+
 
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -61,6 +70,20 @@ public class PlayerState : MonoBehaviour
         playerHP -= dmg;
         // clamp pervent value to go below zero or over 100
         playerHP = Mathf.Clamp(playerHP, 0f, maxHP);
+        // If health drops to zero and wasn't already at zero, trigger game over
+    if (playerHP <= 0 && !isDead)
+    {
+        isDead = true;
+        Debug.Log("Player has died. Game Over should trigger.");
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.OnGameOver();
+        }
+        else
+        {
+            Debug.LogError("GameOverScreen reference not set in PlayerState.");
+        }
+    }
     }
 
 

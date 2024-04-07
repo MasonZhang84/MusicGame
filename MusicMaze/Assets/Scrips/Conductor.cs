@@ -56,6 +56,10 @@ public class Conductor : MonoBehaviour
     void FixedUpdate()
     {
 
+
+        if (Input.GetKeyDown(KeyCode.M))
+    {Debug.Log("pause");}
+
         //determine how many seconds since the song started
         songPosition = (float)(AudioSettings.dspTime - dspSongTime);
 
